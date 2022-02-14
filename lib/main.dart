@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/Question.dart';
+
+import './question.dart';
+import './answer.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -18,11 +20,19 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
   var questions = [
-    'what\'s your favourite colour',
-    'what\'s your favourite animal',
-    'question 03'
+    {
+      'questionText': 'what\'s your favourite colour',
+      'answers': ['Red,', 'Black', 'Green', 'white']
+    },
+    {
+      'questionText': 'what\'s your favourite animal',
+      'answers': ['Cow,', 'Rabit', 'Elephant', 'Tiger']
+    },
+    {
+      'questionText': 'who\'s the best',
+      'answers': ['Roger,', 'Roger', 'Roger']
+    }
   ];
-  var buttons = ['button 0', 'button 1', 'button 2', 'button 3'];
 
   void _answerQuestion() {
     setState(() {
@@ -34,27 +44,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('My first app'),
-        ),
-        body: Column(children: [
-          Question(questions[_questionIndex]),
-          RaisedButton(
-            child: Text(buttons[1]),
-            onPressed: _answerQuestion,
-          ),
-          RaisedButton(
-            child: Text(buttons[2]),
-            onPressed: () => print('answer 2222'),
-          ),
-          RaisedButton(
-              child: Text(buttons[3]),
-              onPressed: () {
-                print('answer 3');
-              }),
-        ]),
+        home: Scaffold(
+      appBar: AppBar(
+        title: Text('My first app'),
       ),
-    );
+      body: Column(
+        children: [
+          Question(questions[_questionIndex]['questionText']),
+          ...(questions[_questionIndex]['answers'] as List<String>)
+              .map((answer) {
+            return Answer(_answerQuestion, answer);
+          }).toList(),
+        ],
+      ),
+    ));
   }
 }
